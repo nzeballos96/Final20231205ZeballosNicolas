@@ -21,11 +21,11 @@ public class Instancias {
 
 		System.out.println("BIENVENIDO AL MENU");
 		System.out.println("por favor seleccione una opcion");
-		System.out.println("1--> Agregar mesa");
-		System.out.println("2--> Listar mesa");
+		System.out.println("1--> CARGAR MESA");
+		System.out.println("2--> LISTAR MESA");
 		System.out.println("3--> Modificar estado mesa");
 		System.out.println("4--> Reservar mesa");
-		System.out.println("5--> Listar reservas");
+		System.out.println("5--> ELIMINAR MESA");
 		System.out.println("6--> Listar estado de mesas");
 		System.out.println("");
 		
@@ -44,7 +44,7 @@ public class Instancias {
 	 	           
 	            	ArrayList<Mesa> mesas = cmesa.getMesas();
 	                for (Mesa mesa : mesas) {
-	                    System.out.println("ID: " + mesa.getId());
+	                    System.out.println("NUMERO DE MESA--> " + mesa.getNroMesa() + " ESTADO MESA--> " + mesa.getEstado());
 	                }            	
 	                Menu();
 	                
@@ -63,7 +63,7 @@ public class Instancias {
 	                break;
 	            case 5:
 	 	           
-	       //     	reserva.listarReservas();
+	            	cmesa.eliminarMesa();
 	            	
 	                Menu();
 	                break;

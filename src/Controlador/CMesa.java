@@ -49,4 +49,23 @@ public class CMesa extends Mesa {
 	   public ArrayList<Mesa> getMesas() {
 	        return mesas;
 	    }
+
+	   public void eliminarMesa() {
+
+			System.out.println("INGRESE NUMERO DE MESA A ELIMINAR");
+			int nroMesa = new Scanner(System.in).nextInt();
+
+			for (Mesa mesa : mesas) {
+				if (mesa.getNroMesa() == nroMesa) {
+					mesas.remove(mesa);
+					System.out.println("Mesa eliminada");
+					return;
+				}
+			}
+
+			System.out.println("No se encontro la mesa");
+	}	   
+
 }
+
+

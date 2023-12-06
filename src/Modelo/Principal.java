@@ -7,6 +7,12 @@ public class Principal {
 
 		
 		Instancias ins= new Instancias();
+		try {
+			ins.Menu();
+		} catch (Exception e) {
+			//// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
