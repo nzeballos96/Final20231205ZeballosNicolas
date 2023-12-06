@@ -1,4 +1,4 @@
-package MODEL;
+package Modelo;
 
 public class Libre {
     

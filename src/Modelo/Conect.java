@@ -10,7 +10,7 @@ public class Conect {
     String base = "BaseFinal20231205ZeballosNicolas";
     String url = "jdbc:mysql://localhost:3306/";
     String usuario = "root";
-    String contraseña = "";
+    String contra = "";
     String driver = "com.mysql.cj.jdbc.Driver";
 
     public Conect() {
@@ -23,7 +23,7 @@ public class Conect {
     public Connection conexion() {
         try {
             Class.forName(driver);
-            conect = DriverManager.getConnection(url + base, usuario, contraseña);
+            conect = DriverManager.getConnection(url + base, usuario, contra);
      //       System.out.println("CONECTADO");
          //   JOptionPane.showMessageDialog(null, "INICIANDO BASE");
         } catch (Exception e) {
