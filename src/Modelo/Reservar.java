@@ -2,7 +2,7 @@ package Modelo;
 
 import java.util.Date;
 
-public class Reserva extends Restaurant{
+public class Reservar extends Restaurant{
     
     Date fecha;
 	String nombre;
@@ -11,10 +11,10 @@ public class Reserva extends Restaurant{
 	Mesa nroMesa;
 	
 	
-	public Reserva() {
+	public Reservar() {
 		super();
 	}
-	public Reserva(Date fecha, String nombre, String apellido, int cantidadComensales, Mesa nroMesa) {
+	public Reservar(Date fecha, String nombre, String apellido, int cantidadComensales, Mesa nroMesa) {
 		super();
 		this.fecha = fecha;
 		this.nombre = nombre;

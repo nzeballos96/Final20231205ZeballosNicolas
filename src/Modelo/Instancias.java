@@ -14,7 +14,9 @@ public class Instancias {
     public Instancias (){
                
     }
-	public void Menu() throws Exception {
+	public void Menu() 
+			//throws Exception 
+	{
 		
 		Scanner scanner = new Scanner(System.in);
 
@@ -114,4 +116,6 @@ public class Instancias {
 	}
 	
 }
+	
+
 

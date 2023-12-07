@@ -9,13 +9,13 @@ import ZModelov.Estado;
 import ZModelov.Mesa;
 import ZModelov.Reserva;
 
-public class CReserva extends Reserva implements Estado{
+public class CReserva extends Reservar implements Estado{
 	
 	private CMesa mesa;
     private ArrayList<Mesa> mesas;
 
 	private Scanner scan;
-	private static ArrayList<Reserva> reservas;
+	private static ArrayList<Reservar> reservas;
 	public CReserva() {
 		this.scan = new Scanner(System.in);
 		this.reservas = new ArrayList<>();	
@@ -52,11 +52,11 @@ public class CReserva extends Reserva implements Estado{
 			System.out.println("Ingrese el n�mero de mesa reservada: ");
 			int nroMesa = scanner.nextInt();
 							
-			if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupado && cantidadComensales < mesa.getCapacidad()) {
+			if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupar && cantidadComensales < mesa.getCapacidad()) {
 				mesa.setEstado(EEstado.Reservado);
 				System.out.println("La mesa " + mesa.getNroMesa() + " se ha reservado");
 			
-				Reserva reserva = new Reserva();
+				Reservar reserva = new Reservar();
 				reservas.add(reserva);
 			} else {
 				System.out.println("La mesa ya est� reservada excede el numero de comensales. POR FAVOR INGRESER OTRA");
@@ -80,11 +80,11 @@ public class CReserva extends Reserva implements Estado{
 			System.out.println("Ingrese el n�mero de mesa a ocupar: ");
 			int nroMesa2 = scanner2.nextInt();
 								
-			if (nroMesa2 == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupado && cantidadComensales2 < mesa.getCapacidad()) {
+			if (nroMesa2 == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupar && cantidadComensales2 < mesa.getCapacidad()) {
 				mesa.setEstado(EEstado.Reservado);
 				System.out.println("La mesa " + mesa.getNroMesa() + " se ha ocupado");
 
-				Reserva reserva = new Reserva();
+				Reservar reserva = new Reservar();
 				reservas.add(reserva);
 			
 			} else {
@@ -97,7 +97,7 @@ public class CReserva extends Reserva implements Estado{
 			System.out.println("INGRESE NUMERO DE MESA");
 			int nroMesa3 = new Scanner(System.in).nextInt();
 				
-			if (nroMesa3 == mesa.getNroMesa() && mesa.getEstado() == EEstado.Reservado && mesa.getEstado() == EEstado.Ocupado) {
+			if (nroMesa3 == mesa.getNroMesa() && mesa.getEstado() == EEstado.Reservado && mesa.getEstado() == EEstado.Ocupar) {
 				mesa.setEstado(EEstado.Reservado);
 				System.out.println("La mesa " + mesa.getNroMesa() + " se ha liberado");
 			}	
@@ -110,12 +110,12 @@ public class CReserva extends Reserva implements Estado{
 
 	@Override
 	public void liberar(Mesa m) {
-		Reserva reserva = new Reserva();
+		Reservar reserva = new Reservar();
 		Mesa mesa = new Mesa();
 		System.out.println("INGRESE NUMERO DE MESA");
 		int nroMesa = new Scanner(System.in).nextInt();
 			
-		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() == EEstado.Reservado && mesa.getEstado() == EEstado.Ocupado) {
+		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() == EEstado.Reservado && mesa.getEstado() == EEstado.Ocupar) {
 			mesa.setEstado(EEstado.Reservado);
 			System.out.println("La mesa " + mesa.getNroMesa() + " se ha liberado");
 			
@@ -146,11 +146,11 @@ public class CReserva extends Reserva implements Estado{
 		System.out.println("Ingrese el n�mero de mesa reservada: ");
 		int nroMesa = scanner.nextInt();
 						
-		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupado) {
+		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupar) {
 			mesa.setEstado(EEstado.Reservado);
 			System.out.println("La mesa " + mesa.getNroMesa() + " se ha reservado");
 		
-			Reserva reserva = new Reserva();
+			Reservar reserva = new Reservar();
 			reservas.add(reserva);
 		} else {
 			System.out.println("La mesa ya est� reservada");
@@ -179,11 +179,11 @@ public class CReserva extends Reserva implements Estado{
 		int nroMesa = scanner.nextInt();
 			
 			
-		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupado) {
+		if (nroMesa == mesa.getNroMesa() && mesa.getEstado() != EEstado.Reservado && mesa.getEstado() != EEstado.Ocupar) {
 			mesa.setEstado(EEstado.Reservado);
 			System.out.println("La mesa " + mesa.getNroMesa() + " se ha ocupado");
 
-			Reserva reserva = new Reserva();
+			Reservar reserva = new Reservar();
 			reservas.add(reserva);
 		
 		} else {
@@ -197,7 +197,7 @@ public class CReserva extends Reserva implements Estado{
 		return false;
 	}
 	
-	public static ArrayList<Reserva> listarReservas() {
+	public static ArrayList<Reservar> listarReservas() {
 	    // Devuelve una lista de todas las reservas
 	    return reservas;
 	}
@@ -205,7 +205,7 @@ public class CReserva extends Reserva implements Estado{
 	public static int sumarCantidadComensalesTotalMesas() {
 	    int cantidadComensalesTotal = 0;
 
-	    for (Reserva reserva : reservas) {
+	    for (Reservar reserva : reservas) {
 	        cantidadComensalesTotal += reserva.getCantidadComensales();
 	    }
 

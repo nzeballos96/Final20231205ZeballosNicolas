@@ -1,7 +1,7 @@
 package Controlador;
 
-import Modelo.Reserva;
+import Modelo.Reservar;
 
-public class CReserva extends Reserva{
+public class CReserva extends Reservar{
 
 }

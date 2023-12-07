@@ -20,6 +20,12 @@ public class CMesa extends Mesa {
 		System.out.println("INGRESE NUMERO DE MESA");
 		int nroMesa = new Scanner(System.in).nextInt();
 
+		// Validar que el numero de mesa sea valido
+		if (nroMesa < 1 || nroMesa > 100) {
+			System.out.println("El numero de mesa debe ser un valor entre 1 y 100");
+			return;
+		}
+
 		// Inicializar la variable mesa
 		Mesa mesa = new Mesa();	
 
@@ -38,12 +44,26 @@ public class CMesa extends Mesa {
 		System.out.println("INGRESE CONSUMO");
 		double consumo = new Scanner(System.in).nextDouble();
 
+		// Validar que la capacidad sea valida
+		if (capacidad < 1 || capacidad > 10) {
+			System.out.println("La capacidad debe ser un valor entre 1 y 10");
+			return;
+		}
+
+		// Validar que el consumo sea valido
+		if (consumo < 0) {
+			System.out.println("El consumo debe ser un valor no negativo");
+			return;
+		}
+
 		// Agregar la mesa al arraylist
 		mesa.setNroMesa(nroMesa);
 		mesa.setCapacidad(capacidad);
 		mesa.setConsumo(consumo);
 		mesa.setEstado(getEstado());
 		mesas.add(mesa);
+		
+		System.out.println("Mesa cargada");
 	}
 	
 	   public ArrayList<Mesa> getMesas() {

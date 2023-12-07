@@ -1,7 +1,7 @@
 package Modelo;
 
 public interface Estado {
-   void Libre();
-   void Ocuapado();
-   void Reservado();
+    void ocupar();
+    void liberar();
+    void reservar();
 }

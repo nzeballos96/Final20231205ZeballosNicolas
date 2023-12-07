@@ -77,7 +77,7 @@ reservar(mesa);
 		System.out.println("INGRESE NUMERO DE MESA");
 		int nroMesa = new Scanner(System.in).nextInt();
 
-	    if (mesa.getEstado() != EEstado.Libre) {
+	    if (mesa.getEstado() != EEstado.Liberar) {
 	    	mesa.setEstado(EEstado.Baja);
 			System.out.println("La mesa " + mesa.getNroMesa() + " se ha dado de baja");
 		   

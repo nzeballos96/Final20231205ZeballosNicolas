@@ -6,7 +6,7 @@ public class Mesa extends Restaurant{
         int nroMesa;
 	    int capacidad;
 	    double consumo;
-	    Estado estado;
+	    private Estado estado;
 	      
 		public Mesa() {
 			super();
@@ -16,7 +16,7 @@ public class Mesa extends Restaurant{
 			this.nroMesa = nroMesa;
 			this.capacidad = capacidad;
 			this.consumo = consumo;
-			this.estado = estado;
+			this.estado = new Liberar();
 		}
 		public int getNroMesa() {
 			return nroMesa;
@@ -43,4 +43,20 @@ public class Mesa extends Restaurant{
 			this.estado = estado;
 		}
 
+		   public void cambiarEstado(Estado nuevoEstado) {
+		        this.estado = nuevoEstado;
+		    }
+
+		    public void ocupar() {
+		        estado.ocupar();
+		    }
+
+		    public void liberar() {
+		        estado.liberar();
+		    }
+
+		    public void reservar() {
+		        estado.reservar();
+		    }
+		
 }

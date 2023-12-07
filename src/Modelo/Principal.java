@@ -2,19 +2,15 @@ package Modelo;
 
 public class Principal {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		
-		Instancias ins= new Instancias();
-		try {
-			ins.Menu();
-		} catch (Exception e) {
-			//// TODO Auto-generated catch block
-			e.printStackTrace();
+		public static void main(String[] args) {
+			// TODO Auto-generated method stub
+			
+
+			Instancias in= new Instancias();
+			in.Menu();
+			
+
 		}
-		
-	}
-
 }
 

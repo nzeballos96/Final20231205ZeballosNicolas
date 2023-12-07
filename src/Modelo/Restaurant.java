@@ -5,9 +5,9 @@ public class Restaurant {
     String nombre,domicilio;
     int id;
     Mesa mesa;
-    Reserva reserva;
+    Reservar reserva;
     
-    public Restaurant(String nombre, String domicilio, int id, Mesa mesa, Reserva reserva) {
+    public Restaurant(String nombre, String domicilio, int id, Mesa mesa, Reservar reserva) {
 		super();
 		this.nombre = nombre;
 		this.domicilio = domicilio;
@@ -42,10 +42,10 @@ public class Restaurant {
 	public void setMesa(Mesa mesa) {
 		this.mesa = mesa;
 	}
-	public Reserva getReserva() {
+	public Reservar getReserva() {
 		return reserva;
 	}
-	public void setReserva(Reserva reserva) {
+	public void setReserva(Reservar reserva) {
 		this.reserva = reserva;
 	}
 	
