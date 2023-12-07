@@ -66,6 +66,12 @@ public class CMesa extends Mesa {
 			System.out.println("No se encontro la mesa");
 	}	   
 
+	   
+		public void cargardeMesas()	{
+
+
+}
+		
 }
 
 
