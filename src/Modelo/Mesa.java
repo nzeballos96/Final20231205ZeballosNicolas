@@ -3,20 +3,42 @@ package Modelo;
 
 public class Mesa extends Restaurant{
  
-        int nroMesa;
+	int  idmesa;
+        public int getIdmesa() {
+		return idmesa;
+	}
+	public void setIdmesa(int idmesa) {
+		this.idmesa = idmesa;
+	}
+
+		int nroMesa;
 	    int capacidad;
 	    double consumo;
 	    private Estado estado;
+	    int restoid;
+	    int Prueba;
 	      
-		public Mesa() {
-			super();
+	    public int getPrueba() {
+			return Prueba;
 		}
+		public void setPrueba(int prueba) {
+			Prueba = prueba;
+		}
+		public int getRestoid() {
+			return restoid;
+		}
+		public void setRestoid(int restoid) {
+			this.restoid = restoid;
+		}
+		public Mesa() {
+	        this.estado = setState();
+	    }
 		public Mesa(int nroMesa, int capacidad, double consumo, Estado estado) {
 			super();
 			this.nroMesa = nroMesa;
 			this.capacidad = capacidad;
 			this.consumo = consumo;
-			this.estado = new Liberar();
+			this.estado = estado;
 		}
 		public int getNroMesa() {
 			return nroMesa;
@@ -58,5 +80,9 @@ public class Mesa extends Restaurant{
 		    public void reservar() {
 		        estado.reservar();
 		    }
-		
+
+		    public Estado setState() {
+				this.estado = estado;
+		    	return estado;
+		    }
 }

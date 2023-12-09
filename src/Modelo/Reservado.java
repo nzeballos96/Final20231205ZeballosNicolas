@@ -2,7 +2,9 @@ package Modelo;
 
 public class Reservado implements Estado {
     
-    @Override
+    private String estado;
+
+	@Override
     public void ocupar() {
         System.out.println("No se puede ocupar una mesa reservada");
     }
@@ -14,7 +16,13 @@ public class Reservado implements Estado {
 
     @Override
     public void reservar() {
-        System.out.println("La mesa ya está reservada");
+         System.out.println("La mesa ya está reservada");
     }
+    
+	@Override
+	public String SetState() {
+		return "RESERVADO";
+		
+	}
 	
 }

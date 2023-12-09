@@ -2,7 +2,9 @@ package Modelo;
 
 public class Liberar implements Estado {
 	
-	  @Override
+	 // Estado estado;
+
+	@Override
 	    public void ocupar() {
 	        System.out.println("Mesa ocupada");
 	    }
@@ -16,4 +18,10 @@ public class Liberar implements Estado {
 	    public void reservar() {
 	        System.out.println("Mesa reservada");
 	    }
+	    
+		@Override
+		public String SetState() {
+			return "LIBRE";
+			
+		}
 }

@@ -15,17 +15,20 @@ public class Instancias {
                
     }
 	public void Menu() 
-			//throws Exception 
+			
 	{
-		
+		Conect con = new Conect();
 		Scanner scanner = new Scanner(System.in);
+		
+		
+		Scanner scanner2 = new Scanner(System.in);
 
 
 		System.out.println("BIENVENIDO AL MENU");
 		System.out.println("por favor seleccione una opcion");
 		System.out.println("1--> CARGAR MESA");
 		System.out.println("2--> LISTAR MESA");
-		System.out.println("3--> Modificar estado mesa");
+		System.out.println("3--> MODIFICAR ESTADO");
 		System.out.println("4--> Reservar mesa");
 		System.out.println("5--> ELIMINAR MESA");
 		System.out.println("6--> Listar estado de mesas");
@@ -38,7 +41,14 @@ public class Instancias {
 
 	        switch (opcion) {
 	            case 1:
-	            	cmesa.cargarMesa();;
+	            	
+	            	System.out.println("BIENVENIDO ingrese id");
+	        		int idresto = scanner.nextInt();
+	        		System.out.println("INGRESE NUMERO DE MESA");
+	        		int nroMesa = new Scanner(System.in).nextInt();
+	            	System.out.println("INGRESE CAPACIDAD");
+	        		int capacidad = new Scanner(System.in).nextInt();
+	            	cmesa.cargarMesa(nroMesa, capacidad, idresto);;
 	            	
 	                Menu();
 	                break;
@@ -46,15 +56,17 @@ public class Instancias {
 	 	           
 	            	ArrayList<Mesa> mesas = cmesa.getMesas();
 	                for (Mesa mesa : mesas) {
-	                    System.out.println("NUMERO DE MESA--> " + mesa.getNroMesa() + " ESTADO MESA--> " + mesa.getEstado());
+	                    System.out.println("NUMERO DE MESA--> " + mesa.getNroMesa() + " CAPACIDAD MESA--> " + mesa.getCapacidad()
+	                    + " CONSUMO MESA--> " + mesa.getConsumo() + " ESTADO MESA--> " + mesa.getEstado());
 	                }            	
 	                Menu();
 	                
 	                break;
 	                
 	            case 3:
-	            	
-	           // 	mesa.estadorMesa();
+	            	System.out.println("INGRESE NUMERO DE MESA");
+	            	int NRO = scanner.nextInt();
+	            	cmesa.cambiarEstado(NRO);
 	 	           
 	                Menu();
 	                break;
@@ -64,8 +76,9 @@ public class Instancias {
 	                Menu();
 	                break;
 	            case 5:
-	 	           
-	            	cmesa.eliminarMesa();
+	            	System.out.println("INGRESE NUMERO DE MESA");
+	            	int NROE = scanner.nextInt();
+	            	cmesa.eliminarMesa(NROE);
 	            	
 	                Menu();
 	                break;
