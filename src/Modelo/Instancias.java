@@ -24,7 +24,7 @@ public class Instancias {
 		System.out.println("1--> CARGAR MESA");
 		System.out.println("2--> LISTAR MESA");
 		System.out.println("3--> MODIFICAR ESTADO");
-		System.out.println("4--> Reservar mesa");
+		System.out.println("4--> Reservagestion mesa");
 		System.out.println("5--> ELIMINAR MESA");
 		System.out.println("6--> Listar estado de mesas");
 		System.out.println("");

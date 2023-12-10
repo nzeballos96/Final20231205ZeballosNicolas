@@ -1,6 +1,6 @@
 package Controlador;
 
-import Modelo.Reservar;
+import Modelo.Reservagestion;
 import Modelo.Mesa;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-	public class CReserva extends Reservar {
+	public class CReserva extends Reservagestion {
 
 
 	    public boolean existeMesa(int nroMesa) {
@@ -25,9 +25,9 @@ import java.text.ParseException;
 
 	    public boolean estaOcupada(int nroMesa, Date fecha) {
 
-	        ArrayList<Reservar> reservas = new ArrayList<>();
+	        ArrayList<Reservagestion> reservas = new ArrayList<>();
 
-	        for (Reservar reserva : reservas) {
+	        for (Reservagestion reserva : reservas) {
 	            if (reserva.getNroMesa().getNroMesa() == nroMesa && reserva.getFecha().equals(fecha)) {
 	                return true;
 	            }
@@ -51,7 +51,7 @@ import java.text.ParseException;
 	        }
 
 	        if (existeMesa(nroMesa) && !estaOcupada(nroMesa, fecha)) {
-	            Reservar reserva = new Reservar(fecha, nombre, apellido, cantidadComensales, new Mesa(nroMesa));
+	            Reservagestion reserva = new Reservagestion(fecha, nombre, apellido, cantidadComensales, new Mesa(nroMesa));
 	            System.out.println("Reserva creada con éxito.");
 	        } else {
 	            System.out.println("La mesa no existe o está ocupada.");

@@ -25,8 +25,8 @@ public class CMesa extends Mesa {
 	public void cargarMesa(int nroMesa, int capacidad, int idresto) {
 
 		// Validar que el numero de mesa sea valido
-		if (nroMesa < 1 || nroMesa > 100) {
-			System.out.println("El numero de mesa debe ser un valor entre 1 y 100");
+		if (nroMesa < 1 ) {
+			System.out.println("El numero de mesa debe ser mayor a 1");
 			return;
 		}
 
@@ -41,13 +41,13 @@ public class CMesa extends Mesa {
 			}
 		}
 
-		int prueba = 0;
 		int Idmesa = 0;
 		double consumo = 0.0;
-
+		Estado estado = LIBRE;
+		
 		// Validar que la capacidad sea valida
-		if (capacidad < 1 || capacidad > 10) {
-			System.out.println("La capacidad debe ser un valor entre 1 y 10");
+		if (capacidad < 1 ) {
+			System.out.println("La capacidad debe mayor a 1");
 			return;
 		}
 
@@ -56,7 +56,7 @@ public class CMesa extends Mesa {
 		mesa.setNroMesa(nroMesa);
 		mesa.setCapacidad(capacidad);
 		mesa.setConsumo(consumo);
-		mesa.setPrueba(prueba);
+		mesa.setEstado(estado);
 		mesa.setRestoid(idresto);
 		;
 		mesas.add(mesa);
@@ -73,7 +73,7 @@ public class CMesa extends Mesa {
 			((PreparedStatement) ps).setInt(2, mesa.getNroMesa());
 			((PreparedStatement) ps).setInt(3, mesa.getCapacidad());
 			((PreparedStatement) ps).setDouble(4, mesa.getConsumo());
-			((PreparedStatement) ps).setInt(5, mesa.getPrueba());
+			((PreparedStatement) ps).setString(5, mesa.getEstado().SetState());
 			((PreparedStatement) ps).setInt(6, mesa.getRestoid());
 
 			ps.execute();
@@ -150,7 +150,7 @@ public class CMesa extends Mesa {
 			// mesa.setEstado(new Ocupar());
 			System.out.println("Mesa ocupada");
 		} else {
-			mesa.setEstado(new Reservado());
+			mesa.setEstado(new Reservar());
 			System.out.println("Mesa reservada");
 		}
 	}

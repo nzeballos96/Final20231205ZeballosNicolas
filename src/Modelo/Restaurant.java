@@ -5,7 +5,7 @@ public class Restaurant {
 	String nombre, domicilio;
 	int id;
 
-	public Restaurant(String nombre, String domicilio, int id, Mesa mesa, Reservar reserva) {
+	public Restaurant(String nombre, String domicilio, int id, Mesa mesa, Reservagestion reserva) {
 		super();
 		this.nombre = nombre;
 		this.domicilio = domicilio;
