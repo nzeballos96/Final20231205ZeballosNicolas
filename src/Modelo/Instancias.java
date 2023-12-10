@@ -44,7 +44,7 @@ public class Instancias {
 				Menu(idresto);
 				break;
 			case 2:
-
+				cmesa.cargarmesas(idresto);
 				ArrayList<Mesa> mesas = cmesa.getMesas();
 				for (Mesa mesa : mesas) {
 					System.out.println(
