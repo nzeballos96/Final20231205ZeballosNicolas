@@ -15,7 +15,7 @@ public class Instancias {
 
 	}
 
-	public void Menu(int idresto) {
+	public void Menu(int idresto) throws SQLException {
 		Conect con = new Conect();
 		Scanner scanner = new Scanner(System.in);
 
@@ -44,25 +44,18 @@ public class Instancias {
 				Menu(idresto);
 				break;
 			case 2:
-				cmesa.cargarmesas(idresto);
-				ArrayList<Mesa> mesas = cmesa.getMesas();
-				for (Mesa mesa : mesas) {
-					System.out.println(
-							"NUMERO DE MESA--> " + mesa.getNroMesa() + " CAPACIDAD MESA--> " +
-									mesa.getCapacidad()
-									+ " CONSUMO MESA--> " + mesa.getConsumo() // + " ESTADO MESA--> " +
-					// mesa.getEstado()
-					);
-				}
-
+				
+				cmesa.listarmesas(idresto);
+				
 				Menu(idresto);
 
 				break;
 
 			case 3:
+				cmesa.listarmesas(idresto);
 				System.out.println("INGRESE NUMERO DE MESA");
-				int NRO = scanner.nextInt();
-				cmesa.cambiarEstado(NRO);
+				int nroM = scanner.nextInt();
+				cmesa.cambiarEstado(nroM, idresto, null);
 
 				Menu(idresto);
 				break;
@@ -80,36 +73,17 @@ public class Instancias {
 				break;
 
 			case 6:
-				/*
-				 * System.out.println("Mesas ocupadas");
-				 * mesa.listarMesasPorEstado(EEstado.Ocupado);
-				 * System.out.println("Mesas Reservadas");
-				 * mesa.listarMesasPorEstado(EEstado.Reservado);
-				 * System.out.println("Mesas Libres");
-				 * mesa.listarMesasPorEstado(EEstado.Libre);
-				 */
+
 				Menu(idresto);
 				break;
 
 			case 7:
-
-				System.out.println("Capacidad total");
-				// mesa.sumarCapacidadTotalMesas();
-
-				System.out.println("Capacidad ocupada");
-				// reserva.sumarCantidadComensalesTotalMesas();
-
-				// int dispo = mesa.sumarCapacidadTotalMesas() -
-				// reserva.getCantidadComensales();
-
-				// System.out.println("Capacidad disponible" + dispo);
 
 				Menu(idresto);
 				break;
 
 			case 8:
 
-				cmesa.cargarmesas(idresto);
 				// mesa.eliminarMesa();
 
 				Menu(idresto);

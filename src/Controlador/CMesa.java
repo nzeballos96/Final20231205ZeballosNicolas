@@ -86,10 +86,6 @@ public class CMesa extends Mesa {
 		}
 	}
 
-	public ArrayList<Mesa> getMesas() {
-		return mesas;
-	}
-
 	public void eliminarMesa(int nroMesa) {
 
 		for (Mesa mesa : mesas) {
@@ -103,83 +99,167 @@ public class CMesa extends Mesa {
 		System.out.println("No se encontro la mesa");
 	}
 
-	public void cambiarEstado(int nroMesa) {
+    public ArrayList<Mesa> mesasLibres(int idresto) throws SQLException {
+        Conect cn = new Conect();
+        cn.conexion();
 
-		// Buscar la mesa con el número especificado
-		Mesa mesa = null;
-		for (Mesa m : mesas) {
-			if (m.getNroMesa() == nroMesa) {
-				mesa = m;
-				break;
-			}
-		}
+        String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ? and ESTADO = 'LIBRE' ";
 
-		// Validar que la mesa exista
-		if (mesa == null) {
-			System.out.println("No se encontró la mesa");
-			return;
-		}
+        PreparedStatement statement = cn.conexion().prepareStatement(cargamesa);
+        statement.setInt(1, idresto);
 
-		// Obtener el estado actual de la mesa
-		Estado estadoActual = mesa.getEstado();
+        ResultSet rs = statement.executeQuery();
 
-		// Solicitar al usuario el estado nuevo
-		System.out.println("Ingrese el estado nuevo de la mesa (1 = Ocupada, 2 = Reservada):");
-		int estadoNuevo = new Scanner(System.in).nextInt();
+        while (rs.next()) {
+            Mesa mesa = new Mesa();
+            mesa.setNroMesa(rs.getInt("numMesa"));
+            mesa.setCapacidad(rs.getInt("capacidad"));
+            mesa.setConsumo(rs.getInt("consumo"));
+            mesas.add(mesa);
+        }
 
-		// Validar el estado nuevo
-		if (estadoNuevo != 1 && estadoNuevo != 2) {
-			System.out.println("El estado nuevo debe ser 1 o 2");
-			return;
-		}
+        return mesas;
+    }
 
-		// Validar que la mesa no esté ocupada
-		if (estadoActual == this.getEstado()) {
-			System.out.println("La mesa ya está ocupada");
-			return;
-		}
+    public ArrayList<Mesa> mesasReservadas(int idresto) throws SQLException {
+        Conect cn = new Conect();
+        cn.conexion();
 
-		// Validar que la mesa no esté reservada
-		if (estadoActual == this.getEstado()) {
-			System.out.println("La mesa ya está reservada");
-			return;
-		}
+        String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ? and ESTADO = 'RESERVADA' ";
 
-		// Cambiar el estado de la mesa
-		if (estadoNuevo == 1) {
-			// mesa.setEstado(new Ocupar());
-			System.out.println("Mesa ocupada");
-		} else {
-			mesa.setEstado(new Reservar());
-			System.out.println("Mesa reservada");
-		}
-	}
+        PreparedStatement statement = cn.conexion().prepareStatement(cargamesa);
+        statement.setInt(1, idresto);
 
-	public ArrayList<Mesa> cargarmesas(int idresto) {
-		// ArrayList<Mesa> mesas = new ArrayList<>();
+        ResultSet rs = statement.executeQuery();
 
-		try {
-			Conect cn = new Conect();
-			cn.conexion();
-			Mesa mesa = new Mesa();
-			String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ?";
+        ArrayList<Mesa> mesasReservadas = new ArrayList<>();
 
-			PreparedStatement statement = cn.conexion().prepareStatement(cargamesa);
-			statement.setInt(1, idresto);
+        while (rs.next()) {
+            Mesa mesa = new Mesa();
+            mesa.setNroMesa(rs.getInt("numMesa"));
+            mesa.setCapacidad(rs.getInt("capacidad"));
+            mesa.setConsumo(rs.getInt("consumo"));
+            mesasReservadas.add(mesa);
+        }
 
-			ResultSet rs = statement.executeQuery();
 
-			while (rs.next()) {
-				mesa.setNroMesa(rs.getInt("numMesa"));
-				mesa.setCapacidad(rs.getInt("capacidad"));
-				mesa.setConsumo(rs.getInt("consumo"));
+        return mesasReservadas;
+    }
 
-				mesas.add(mesa);
-			}
-		} catch (SQLException e) {
-			System.out.println("Error al cargar las mesas: " + e.getMessage());
-		}
+    public ArrayList<Mesa> mesasOcupadas(int idresto) throws SQLException {
+        Conect cn = new Conect();
+        cn.conexion();
 
-		return mesas;
-	}
+        String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ? and ESTADO = 'OCUPADA' ";
+
+        PreparedStatement statement = cn.conexion().prepareStatement(cargamesa);
+        statement.setInt(1, idresto);
+
+        ResultSet rs = statement.executeQuery();
+
+        ArrayList<Mesa> mesasOcupadas = new ArrayList<>();
+
+        while (rs.next()) {
+            Mesa mesa = new Mesa();
+            mesa.setNroMesa(rs.getInt("numMesa"));
+            mesa.setCapacidad(rs.getInt("capacidad"));
+            mesa.setConsumo(rs.getInt("consumo"));
+            mesasOcupadas.add(mesa);
+        }
+
+        
+        return mesasOcupadas;
+    }
+
+    public void imprimirMesas(ArrayList<Mesa> mesas) {
+        	System.out.println("| Nro Mesa | Capacidad | Consumo |");
+        	System.out.println("|----------|-----------|---------|");
+        for (Mesa mesa : mesas) {
+        	System.out.printf(" | %2d      | %2d       | %2f     |%n", 
+        	mesa.getNroMesa(), mesa.getCapacidad(), mesa.getConsumo());
+        }
+    }
+    
+    public void listarmesas(int idresto) throws SQLException {
+    	System.out.println("<=========================================>");
+		ArrayList<Mesa> mesasLibres = mesasLibres(idresto);
+        System.out.println("Mesas libres:");
+        imprimirMesas(mesasLibres);
+        System.out.println("<=========================================>");
+        System.out.println("<=========================================>");
+
+        ArrayList<Mesa> mesasReservadas = mesasReservadas(idresto);
+        System.out.println("Mesas reservadas:");
+        imprimirMesas(mesasReservadas);
+        System.out.println("<=========================================>");
+        System.out.println("<=========================================>");
+        
+        ArrayList<Mesa> mesasOcupadas = mesasOcupadas(idresto);
+        System.out.println("Mesas ocupadas:");
+        imprimirMesas(mesasOcupadas);
+        System.out.println("<=========================================>");
+    }
+    
+    public void cambiarEstado(int nroMesa, int idresto, String estadoNuevo) throws SQLException {
+
+    	Mesa mesa = new Mesa();
+    	
+    	// Validar que la mesa exista
+    	Conect cn = new Conect();
+    	cn.conexion();
+
+    	String sql = "SELECT numMesa FROM mesa WHERE numMesa = ? AND idrestaurant = ?";
+    	PreparedStatement statement = cn.conexion().prepareStatement(sql);
+    	statement.setInt(1, nroMesa);
+    	statement.setInt(2, idresto);
+
+    	// Ejecutar la consulta
+    	ResultSet rs = statement.executeQuery();
+
+    	// Validar que la mesa exista
+    	if (!rs.next()) {
+    		System.out.println("No se encontr� la mesa");
+    		return;
+    	}
+
+    	// Obtener el estado actual de la mesa
+    	Estado estadoActual = Estado.valueOf(rs.getString("estado"));
+
+    	// Cambiar el estado de la mesa
+    	switch (estadoNuevo) {
+    		case "Ocupada":
+    			if (estadoActual == Estado.LIBRE) {
+    				mesa.setEstado(new Ocupar());
+    			} else if (estadoActual == Estado.RESERVADA) {
+    				System.out.println("La mesa ya est� reservada");
+    				return;
+    			}
+    			break;
+    		case "Reservada":
+    			if (estadoActual == Estado.LIBRE) {
+    				mesa.setEstado(new Reservar());
+    			} else if (estadoActual == Estado.OCUPADA) {
+    				System.out.println("La mesa ya est� ocupada");
+    				return;
+    			}
+    			break;
+    		default:
+    			System.out.println("El estado nuevo debe ser 'Ocupada' o 'Reservada'");
+    			return;
+    	}
+
+    	// Actualizar el estado de la mesa en la base de datos
+
+    	sql = "UPDATE mesa SET estado = ? WHERE numMesa = ? AND idrestaurant = ?";
+    	statement = cn.conexion().prepareStatement(sql);
+    	statement.setString(1, mesa.getEstado().toString());
+    	statement.setInt(2, mesa.getNroMesa());
+    	statement.setInt(3, idresto);
+
+    	statement.executeUpdate();
+
+    	System.out.println("Estado de la mesa actualizado");
+
+    	cn.cerrar();
+    }
 }

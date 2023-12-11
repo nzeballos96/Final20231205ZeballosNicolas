@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import Controlador.CMesa;
@@ -10,7 +11,7 @@ public class Principal {
 	static CRestaurant resto = new CRestaurant();
 	static CMesa cmesa = new CMesa();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
 		System.out.println("BIENVENIDO AL SISTEMA, SELECCIONE UNA OPCION");
@@ -27,7 +28,6 @@ public class Principal {
 				Restaurant restaurante = resto.buscarResto(idresto);
 				if (restaurante != null) {
 					Instancias in = new Instancias();
-					cmesa.cargarmesas(idresto);
 					in.Menu(idresto);
 
 				} else {
