@@ -15,7 +15,7 @@ public class Instancias {
 
 	}
 
-	public void Menu(int idresto) {
+	public void Menu(int idresto) throws SQLException {
 		Conect con = new Conect();
 		Scanner scanner = new Scanner(System.in);
 
@@ -39,21 +39,23 @@ public class Instancias {
 				System.out.println("INGRESE CAPACIDAD");
 				int capacidad = new Scanner(System.in).nextInt();
 				cmesa.cargarMesa(nroMesa, capacidad, idresto);
-				;
 
 				Menu(idresto);
 				break;
 			case 2:
-				cmesa.cargarmesas(idresto);
-				ArrayList<Mesa> mesas = cmesa.getMesas();
-				for (Mesa mesa : mesas) {
-					System.out.println(
-							"NUMERO DE MESA--> " + mesa.getNroMesa() + " CAPACIDAD MESA--> " +
-									mesa.getCapacidad()
-									+ " CONSUMO MESA--> " + mesa.getConsumo() // + " ESTADO MESA--> " +
-					// mesa.getEstado()
-					);
-				}
+
+				/*
+				 * ArrayList<Mesa> mesas = cmesa.getMesas();
+				 * for (Mesa mesa : mesas) {
+				 * System.out.println(
+				 * "NUMERO DE MESA--> " + mesa.getNroMesa() + " CAPACIDAD MESA--> " +
+				 * mesa.getCapacidad()
+				 * + " CONSUMO MESA--> " + mesa.getConsumo() // + " ESTADO MESA--> " +
+				 * // mesa.getEstado()
+				 * );
+				 */
+
+				cmesa.Listarmesas(idresto);
 
 				Menu(idresto);
 
@@ -109,7 +111,6 @@ public class Instancias {
 
 			case 8:
 
-				cmesa.cargarmesas(idresto);
 				// mesa.eliminarMesa();
 
 				Menu(idresto);

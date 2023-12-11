@@ -1,6 +1,5 @@
 package Modelo;
 
-
 public class Mesa extends Restaurant implements Estado {
 
     int idmesa;
@@ -9,7 +8,7 @@ public class Mesa extends Restaurant implements Estado {
     double consumo;
     private Estado estado = Estado.LIBRE;
     int restoid;
- 
+
     public int getIdmesa() {
         return idmesa;
     }
@@ -17,7 +16,7 @@ public class Mesa extends Restaurant implements Estado {
     public void setIdmesa(int idmesa) {
         this.idmesa = idmesa;
     }
-    
+
     public int getRestoid() {
         return restoid;
     }
@@ -27,7 +26,7 @@ public class Mesa extends Restaurant implements Estado {
     }
 
     public Mesa() {
-        
+
     }
 
     public Mesa(int nroMesa, int capacidad, double consumo, Estado estado, int restoid) {
@@ -38,7 +37,7 @@ public class Mesa extends Restaurant implements Estado {
         this.estado = estado;
         this.restoid = restoid;
     }
-    
+
     public int getNroMesa() {
         return nroMesa;
     }

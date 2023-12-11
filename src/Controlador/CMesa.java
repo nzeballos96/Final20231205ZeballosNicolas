@@ -22,10 +22,10 @@ public class CMesa extends Mesa {
 
 	}
 
-	public void cargarMesa(int nroMesa, int capacidad, int idresto) {
+	public void cargarMesa(int nroMesa, int capacidad, int idresto) throws SQLException {
 
 		// Validar que el numero de mesa sea valido
-		if (nroMesa < 1 ) {
+		if (nroMesa < 1) {
 			System.out.println("El numero de mesa debe ser mayor a 1");
 			return;
 		}
@@ -44,9 +44,9 @@ public class CMesa extends Mesa {
 		int Idmesa = 0;
 		double consumo = 0.0;
 		Estado estado = LIBRE;
-		
+
 		// Validar que la capacidad sea valida
-		if (capacidad < 1 ) {
+		if (capacidad < 1) {
 			System.out.println("La capacidad debe mayor a 1");
 			return;
 		}
@@ -58,31 +58,49 @@ public class CMesa extends Mesa {
 		mesa.setConsumo(consumo);
 		mesa.setEstado(estado);
 		mesa.setRestoid(idresto);
-		;
 		mesas.add(mesa);
 
-		try {
+		Conect cn = new Conect();
+		cn.conexion();
+		// Mesa mesa = new Mesa();
+		String vermesa = "SELECT * from mesa WHERE IDRESTAURANT = ? and NUMMESA = ? ";
 
-			Conect cn = new Conect();
-			cn.conexion();
-			PreparedStatement ps = cn.conexion().prepareStatement("INSERT INTO mesa "
-					+ "(IDMESA, NUMMESA, CAPACIDAD, CONSUMO, ESTADO, IDRESTAURANT) "
-					+ "VALUES (?, ?, ?, ?, ?, ?)");
+		PreparedStatement statement = cn.conexion().prepareStatement(vermesa);
+		statement.setInt(1, idresto);
+		statement.setInt(2, nroMesa);
 
-			((PreparedStatement) ps).setInt(1, mesa.getIdmesa());
-			((PreparedStatement) ps).setInt(2, mesa.getNroMesa());
-			((PreparedStatement) ps).setInt(3, mesa.getCapacidad());
-			((PreparedStatement) ps).setDouble(4, mesa.getConsumo());
-			((PreparedStatement) ps).setString(5, mesa.getEstado().SetState());
-			((PreparedStatement) ps).setInt(6, mesa.getRestoid());
+		ResultSet rs = statement.executeQuery();
+		if (rs == null) {
 
-			ps.execute();
+			try {
 
-			System.out.println("Mesa cargada");
-			cn.cerrar();
+				// Conect cn = new Conect();
+				cn.conexion();
+				PreparedStatement ps = cn.conexion().prepareStatement("INSERT INTO mesa "
+						+ "(IDMESA, NUMMESA, CAPACIDAD, CONSUMO, ESTADO, IDRESTAURANT) "
+						+ "VALUES (?, ?, ?, ?, ?, ?)");
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+				((PreparedStatement) ps).setInt(1, mesa.getIdmesa());
+				((PreparedStatement) ps).setInt(2, mesa.getNroMesa());
+				((PreparedStatement) ps).setInt(3, mesa.getCapacidad());
+				((PreparedStatement) ps).setDouble(4, mesa.getConsumo());
+				((PreparedStatement) ps).setString(5, mesa.getEstado().SetState());
+				((PreparedStatement) ps).setInt(6, mesa.getRestoid());
+
+				ps.execute();
+
+				System.out.println("Mesa cargada");
+				cn.cerrar();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		else {
+
+			System.out.println("ERROR MESA YA CARGADA");
 		}
 	}
 
@@ -155,29 +173,30 @@ public class CMesa extends Mesa {
 		}
 	}
 
-	public ArrayList<Mesa> cargarmesas(int idresto) {
-		// ArrayList<Mesa> mesas = new ArrayList<>();
+	public ArrayList<Mesa> Listarmesas(int idresto) {
+
+		ArrayList<Mesa> mesas = new ArrayList<>();
 
 		try {
 			Conect cn = new Conect();
 			cn.conexion();
 			Mesa mesa = new Mesa();
-			String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ?";
+			String Listarmesas = "SELECT NUMMESA, CAPACIDAD, CONSUMO, ESTADO FROM mesa WHERE IDRESTAURANT = ?";
 
-			PreparedStatement statement = cn.conexion().prepareStatement(cargamesa);
+			PreparedStatement statement = cn.conexion().prepareStatement(Listarmesas);
 			statement.setInt(1, idresto);
-
 			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
 				mesa.setNroMesa(rs.getInt("numMesa"));
 				mesa.setCapacidad(rs.getInt("capacidad"));
 				mesa.setConsumo(rs.getInt("consumo"));
+				mesa.SetState(Estado.valueOf(rs.getString("estado")));
 
 				mesas.add(mesa);
 			}
-		} catch (SQLException e) {
-			System.out.println("Error al cargar las mesas: " + e.getMessage());
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 
 		return mesas;
