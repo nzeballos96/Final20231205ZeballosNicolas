@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.Scanner;
 
 import Controlador.CMesa;
+import Controlador.CReservagestion;
 
 public class Instancias {
 
 	CMesa cmesa = new CMesa();
+	CReservagestion reserva = new CReservagestion();
 
 	public Instancias() {
 
@@ -44,32 +46,32 @@ public class Instancias {
 				break;
 			case 2:
 
-				/*
-				 * ArrayList<Mesa> mesas = cmesa.getMesas();
-				 * for (Mesa mesa : mesas) {
-				 * System.out.println(
-				 * "NUMERO DE MESA--> " + mesa.getNroMesa() + " CAPACIDAD MESA--> " +
-				 * mesa.getCapacidad()
-				 * + " CONSUMO MESA--> " + mesa.getConsumo() // + " ESTADO MESA--> " +
-				 * // mesa.getEstado()
-				 * );
-				 */
-
-				cmesa.Listarmesas(idresto);
+				cmesa.listarmesas(idresto);
 
 				Menu(idresto);
 
 				break;
 
 			case 3:
+				cmesa.listarmesas(idresto);
 				System.out.println("INGRESE NUMERO DE MESA");
-				int NRO = scanner.nextInt();
-				cmesa.cambiarEstado(NRO);
+				int nroM = scanner.nextInt();
+				cmesa.cambiarEstado(nroM, idresto, null);
 
 				Menu(idresto);
 				break;
 			case 4:
-				// reserva.gestionarReserva();
+				 reserva.reservarmesa(nroMesa, idresto, fecha, nombre, apellido, cantidadComensales)
+				System.out.println("INGRESE NUMERO DE MESA");
+				int nroMmesa = new Scanner(System.in).nextInt();
+				System.out.println("INGRESE CAPACIDAD");
+				int cantidadComensales = new Scanner(System.in).nextInt();
+				System.out.println("INGRESE CAPACIDAD");
+				String fecha = new Scanner(System.in).nextLine();
+				System.out.println("INGRESE CAPACIDAD");
+				String nombre = new Scanner(System.in).nextLine();
+				System.out.println("INGRESE CAPACIDAD");
+				String apellido = new Scanner(System.in).nextLine();
 
 				Menu(idresto);
 				break;
@@ -82,29 +84,11 @@ public class Instancias {
 				break;
 
 			case 6:
-				/*
-				 * System.out.println("Mesas ocupadas");
-				 * mesa.listarMesasPorEstado(EEstado.Ocupado);
-				 * System.out.println("Mesas Reservadas");
-				 * mesa.listarMesasPorEstado(EEstado.Reservado);
-				 * System.out.println("Mesas Libres");
-				 * mesa.listarMesasPorEstado(EEstado.Libre);
-				 */
+
 				Menu(idresto);
 				break;
 
 			case 7:
-
-				System.out.println("Capacidad total");
-				// mesa.sumarCapacidadTotalMesas();
-
-				System.out.println("Capacidad ocupada");
-				// reserva.sumarCantidadComensalesTotalMesas();
-
-				// int dispo = mesa.sumarCapacidadTotalMesas() -
-				// reserva.getCantidadComensales();
-
-				// System.out.println("Capacidad disponible" + dispo);
 
 				Menu(idresto);
 				break;
