@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import Modelo.Conect;
 import Modelo.Mesa;
+import Modelo.Reserva;
 import Modelo.Restaurant;
 
 public class CRestaurant extends Restaurant {
@@ -105,5 +106,44 @@ public class CRestaurant extends Restaurant {
         }
 
         return resto;
+    }
+    
+    public ArrayList<Restaurant> getRestaurants() throws SQLException {
+        // Connect to the database
+        Conect cn = new Conect();
+        cn.conexion();
+
+        // Define the query to retrieve restaurants
+        String query = "SELECT id, nombre, domicilio FROM restaurant";
+
+        // Prepare the statement
+        PreparedStatement statement = cn.conexion().prepareStatement(query);
+
+        // Execute the query and store the results
+        ResultSet rs = statement.executeQuery();
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+
+        // Loop through the results and create Restaurant objects
+        while (rs.next()) {
+            Restaurant resto = new Restaurant();
+            resto.setId(rs.getInt("id"));
+            resto.setNombre(rs.getString("nombre"));
+            resto.setDomicilio(rs.getString("domicilio"));
+            restaurants.add(resto);
+        }
+
+        // Close the resources
+        rs.close();
+        cn.cerrar();
+
+        return restaurants;
+    }
+
+    public void imprimir(ArrayList<Restaurant> restaurants) {
+        System.out.println("| ID    | NOMBRE    | DOMICILIO|");
+        System.out.println("|-------|-----------|----------|");
+        for (Restaurant restaurant : restaurants) {
+            System.out.printf("| %2d      | %2s       | %s\n", restaurant.getId(), restaurant.getNombre(), restaurant.getDomicilio());
+        }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-12-2023 a las 01:23:15
+-- Tiempo de generación: 13-12-2023 a las 02:35:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -36,6 +36,27 @@ CREATE TABLE `mesa` (
   `IDRESTAURANT` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `mesa`
+--
+
+INSERT INTO `mesa` (`IDMESA`, `NUMMESA`, `CAPACIDAD`, `CONSUMO`, `ESTADO`, `IDRESTAURANT`) VALUES
+(5, 23, 2, 0, 'OCUPADA', 1),
+(6, 25, 25, 0, 'RESERVADA', 1),
+(7, 55, 5, 0, 'LIBRE', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registro_consumo`
+--
+
+CREATE TABLE `registro_consumo` (
+  `nummesa` int(11) NOT NULL,
+  `idrestaurante` int(11) NOT NULL,
+  `consumo` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -44,9 +65,10 @@ CREATE TABLE `mesa` (
 
 CREATE TABLE `reserva` (
   `ID` int(8) NOT NULL,
-  `FECH_RES` date NOT NULL,
-  `NOMBRE` int(20) NOT NULL,
-  `APELLIDO` int(20) NOT NULL,
+  `FECH_RES` varchar(8) NOT NULL,
+  `NOMBRE` varchar(20) NOT NULL,
+  `APELLIDO` varchar(20) NOT NULL,
+  `COMENSALES` int(8) NOT NULL,
   `IDMESA` int(8) NOT NULL,
   `IDRESTO` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -59,11 +81,17 @@ CREATE TABLE `reserva` (
 
 CREATE TABLE `restaurant` (
   `ID` int(8) NOT NULL,
-  `NOMBRE` int(50) NOT NULL,
-  `DOMICILIO` varchar(50) NOT NULL,
-  `MESA` int(8) NOT NULL,
-  `RESERVA` int(8) NOT NULL
+  `NOMBRE` varchar(50) NOT NULL,
+  `DOMICILIO` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `restaurant`
+--
+
+INSERT INTO `restaurant` (`ID`, `NOMBRE`, `DOMICILIO`) VALUES
+(1, 'ATENEO', 'GRAL LOPEZ'),
+(2, 'LOS PRIMOS', 'SAN MARTIN');
 
 --
 -- Índices para tablas volcadas
@@ -95,13 +123,19 @@ ALTER TABLE `restaurant`
 -- AUTO_INCREMENT de la tabla `mesa`
 --
 ALTER TABLE `mesa`
-  MODIFY `IDMESA` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDMESA` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `reserva`
+--
+ALTER TABLE `reserva`
+  MODIFY `ID` int(8) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `restaurant`
 --
 ALTER TABLE `restaurant`
-  MODIFY `ID` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

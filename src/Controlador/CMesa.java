@@ -4,17 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-import com.mysql.cj.xdevapi.PreparableStatement;
-
-import Modelo.*;
+import Modelo.Conect;
+import Modelo.Mesa;
 
 public class CMesa extends Mesa {
-
 	private ArrayList<Mesa> mesas;
+
+	Conect cn = new Conect();
 
 	public CMesa() {
 
@@ -58,7 +55,7 @@ public class CMesa extends Mesa {
 
 		int Idmesa = 0;
 		double consumo = 0.0;
-		Estado estado = LIBRE;
+//		Estado estado = Estado.LIBRE;
 
 		// Agregar la mesa al arraylist
 		Mesa mesa = new Mesa();
@@ -66,39 +63,25 @@ public class CMesa extends Mesa {
 		mesa.setNroMesa(nroMesa);
 		mesa.setCapacidad(capacidad);
 		mesa.setConsumo(consumo);
-		mesa.setEstado(estado);
-		mesa.setRestoid(idresto);
+		mesa.setEstado(Estado.LIBRE);
+		mesa.setIdresto(idresto);
 
 		// Insertar la mesa en la base de datos
 		cn.conexion();
 		PreparedStatement ps = cn.conexion().prepareStatement("INSERT INTO mesa "
-				+ "(IDMESA, NUMMESA, CAPACIDAD, CONSUMO, ESTADO, IDRESTAURANT) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)");
+				+ "(IDMESA, NUMMESA, CAPACIDAD, CONSUMO, ESTADO, IDRESTAURANT) " + "VALUES (?, ?, ?, ?, ? , ?)");
 
-		((PreparedStatement) ps).setInt(1, mesa.getIdmesa());
-		((PreparedStatement) ps).setInt(2, mesa.getNroMesa());
-		((PreparedStatement) ps).setInt(3, mesa.getCapacidad());
-		((PreparedStatement) ps).setDouble(4, mesa.getConsumo());
-		((PreparedStatement) ps).setString(5, mesa.getEstado().SetState());
-		((PreparedStatement) ps).setInt(6, mesa.getRestoid());
+		ps.setInt(1, mesa.getIdmesa());
+		ps.setInt(2, mesa.getNroMesa());
+		ps.setInt(3, mesa.getCapacidad());
+		ps.setDouble(4, mesa.getConsumo());
+		ps.setString(5, mesa.getEstado().toString());
+		ps.setInt(6, mesa.getIdresto());
 
 		ps.execute();
 
 		System.out.println("Mesa cargada");
 		cn.cerrar();
-	}
-
-	public void eliminarMesa(int nroMesa) {
-
-		for (Mesa mesa : mesas) {
-			if (mesa.getNroMesa() == nroMesa) {
-				mesas.remove(mesa);
-				System.out.println("Mesa eliminada");
-				return;
-			}
-		}
-
-		System.out.println("No se encontro la mesa");
 	}
 
 	public ArrayList<Mesa> mesasLibres(int idresto) throws SQLException {
@@ -117,7 +100,7 @@ public class CMesa extends Mesa {
 			Mesa mesa = new Mesa();
 			mesa.setNroMesa(rs.getInt("numMesa"));
 			mesa.setCapacidad(rs.getInt("capacidad"));
-			mesa.setConsumo(rs.getInt("consumo"));
+			mesa.setConsumo((double) rs.getInt("consumo"));
 			mesasLibres.add(mesa);
 		}
 
@@ -141,7 +124,7 @@ public class CMesa extends Mesa {
 			Mesa mesa = new Mesa();
 			mesa.setNroMesa(rs.getInt("numMesa"));
 			mesa.setCapacidad(rs.getInt("capacidad"));
-			mesa.setConsumo(rs.getInt("consumo"));
+			mesa.setConsumo((double) rs.getInt("consumo"));
 			mesasReservadas.add(mesa);
 		}
 
@@ -149,7 +132,7 @@ public class CMesa extends Mesa {
 	}
 
 	public ArrayList<Mesa> mesasOcupadas(int idresto) throws SQLException {
-		Conect cn = new Conect();
+
 		cn.conexion();
 
 		String cargamesa = "SELECT NUMMESA, CAPACIDAD, CONSUMO FROM mesa WHERE IDRESTAURANT = ? and ESTADO = 'OCUPADA' ";
@@ -165,7 +148,7 @@ public class CMesa extends Mesa {
 			Mesa mesa = new Mesa();
 			mesa.setNroMesa(rs.getInt("numMesa"));
 			mesa.setCapacidad(rs.getInt("capacidad"));
-			mesa.setConsumo(rs.getInt("consumo"));
+			mesa.setConsumo((double) rs.getInt("consumo"));
 			mesasOcupadas.add(mesa);
 		}
 
@@ -176,8 +159,8 @@ public class CMesa extends Mesa {
 		System.out.println("| Nro Mesa | Capacidad | Consumo |");
 		System.out.println("|----------|-----------|---------|");
 		for (Mesa mesa : mesas) {
-			System.out.printf(" | %2d      | %2d       | %2f     |%n",
-					mesa.getNroMesa(), mesa.getCapacidad(), mesa.getConsumo());
+			System.out.printf(" | %2d      | %2d       | %2f     |%n", mesa.getNroMesa(), mesa.getCapacidad(),
+					mesa.getConsumo());
 		}
 	}
 
@@ -201,71 +184,171 @@ public class CMesa extends Mesa {
 		System.out.println("<=========================================>");
 	}
 
-	public void cambiarEstado(int nroMesa, int idresto, String estadoNuevo) throws SQLException {
+	public void ocuparMesa(int nroMesa, int idresto) throws SQLException {
+	    try {
+	        cn.conexion();
 
-		/*
-		 * Mesa mesa = new Mesa();
-		 * 
-		 * // Validar que la mesa exista
-		 * Conect cn = new Conect();
-		 * cn.conexion();
-		 * 
-		 * String sql =
-		 * "SELECT numMesa FROM mesa WHERE numMesa = ? AND idrestaurant = ?";
-		 * PreparedStatement statement = cn.conexion().prepareStatement(sql);
-		 * statement.setInt(1, nroMesa);
-		 * statement.setInt(2, idresto);
-		 * 
-		 * // Ejecutar la consulta
-		 * ResultSet rs = statement.executeQuery();
-		 * 
-		 * // Validar que la mesa exista
-		 * if (!rs.next()) {
-		 * System.out.println("No se encontró la mesa");
-		 * return;
-		 * }
-		 * 
-		 * // Obtener el estado actual de la mesa
-		 * Estado estadoActual = Estado.valueOf(rs.getString("estado"));
-		 * 
-		 * // Cambiar el estado de la mesa
-		 * switch (estadoNuevo) {
-		 * case "Ocupada":
-		 * if (estadoActual == Estado.LIBRE) {
-		 * mesa.setEstado(new Ocupar());
-		 * } else if (estadoActual == Estado.RESERVADA) {
-		 * System.out.println("La mesa ya está reservada");
-		 * return;
-		 * }
-		 * break;
-		 * case "Reservada":
-		 * if (estadoActual == Estado.LIBRE) {
-		 * mesa.setEstado(new Reservar());
-		 * } else if (estadoActual == Estado.OCUPADA) {
-		 * System.out.println("La mesa ya está ocupada");
-		 * return;
-		 * }
-		 * break;
-		 * default:
-		 * System.out.println("El estado nuevo debe ser 'Ocupada' o 'Reservada'");
-		 * return;
-		 * }
-		 * 
-		 * // Actualizar el estado de la mesa en la base de datos
-		 * 
-		 * sql = "UPDATE mesa SET estado = ? WHERE numMesa = ? AND idrestaurant = ?";
-		 * statement = cn.conexion().prepareStatement(sql);
-		 * statement.setString(1, mesa.getEstado().toString());
-		 * statement.setInt(2, mesa.getNroMesa());
-		 * statement.setInt(3, idresto);
-		 * 
-		 * statement.executeUpdate();
-		 * 
-		 * System.out.println("Estado de la mesa actualizado");
-		 * 
-		 * cn.cerrar();
-		 * }
-		 */
+	        String sqlControl = "SELECT * FROM mesa WHERE NUMMESA = ? AND IDRESTAURANT = ? AND (ESTADO = 'LIBRE' OR ESTADO = 'RESERVADA')";
+	        PreparedStatement statementControl = cn.conexion().prepareStatement(sqlControl);
+	        statementControl.setInt(1, nroMesa);
+	        statementControl.setInt(2, idresto);
+	        ResultSet rsControl = statementControl.executeQuery();
+
+	        if (!rsControl.next()) {
+	            System.out.println("Error: La mesa no está disponible.");
+	            return;
+	        }
+
+	        String sqlOcupar = "UPDATE mesa SET ESTADO = 'OCUPADA' WHERE NUMMESA = ? AND IDRESTAURANT = ?";
+	        PreparedStatement statement = cn.conexion().prepareStatement(sqlOcupar);
+	        statement.setInt(1, nroMesa);
+	        statement.setInt(2, idresto);
+
+	        statement.executeUpdate();
+
+	        System.out.println("Mesa " + nroMesa + " marcada como ocupada.");
+	    } catch (SQLException e) {
+	        System.out.println("Error al ocupar la mesa: " + e.getMessage());
+	    } finally {
+	        cn.cerrar();
+	    }
+	}
+
+	public void reservarMesa(int nroMesa, int idresto) throws SQLException {
+	    try {
+	        cn.conexion();
+
+	        String sqlControl = "SELECT * FROM mesa WHERE ESTADO = 'LIBRE' AND NUMMESA = ? AND IDRESTAURANT = ?";
+	        PreparedStatement statementControl = cn.conexion().prepareStatement(sqlControl);
+	        statementControl.setInt(1, nroMesa);
+	        statementControl.setInt(2, idresto);
+	        ResultSet rsControl = statementControl.executeQuery();
+
+	        if (!rsControl.next()) {
+	            System.out.println("Error: La mesa no está disponible.");
+	            return;
+	        }
+
+	        String sqlReservar = "UPDATE mesa SET ESTADO = 'RESERVADA' WHERE nummesa = ? and IDRESTAURANT = ?";
+	        PreparedStatement statement = cn.conexion().prepareStatement(sqlReservar);
+	        statement.setInt(1, nroMesa);
+	        statement.setInt(2, idresto);
+
+	        statement.executeUpdate();
+
+	        System.out.println("Mesa " + nroMesa + " reservada con éxito.");
+	    } catch (SQLException e) {
+	        System.out.println("Error al reservar la mesa: " + e.getMessage());
+	    } finally {
+	        cn.cerrar();
+	    }
+	}
+
+	public void liberarMesa(int nroMesa, int idresto) throws SQLException {
+		cn.conexion();
+		
+		String sqlControl = "SELECT * FROM mesa WHERE ESTADO <> 'LIBRE' AND NUMMESA = ? AND IDRESTAURANT = ?";
+	    PreparedStatement statementControl = cn.conexion().prepareStatement(sqlControl);
+	    statementControl.setInt(1, nroMesa);
+	    statementControl.setInt(2, idresto);
+	    ResultSet rsControl = statementControl.executeQuery();
+
+	    if (!rsControl.next()) {
+	        System.out.println("ERROR, MESA NO DISPONIBLE");
+	        return;
+	    }
+
+	    // Liberar la mesa
+	    String sqlLiberar = "UPDATE mesa SET estado = 'LIBRE' and consumo = 0 WHERE nummesa = ? AND IDRESTAURANT = ?";
+	    PreparedStatement statement = cn.conexion().prepareStatement(sqlLiberar);
+	    statement.setInt(1, nroMesa);
+	    statement.setInt(2, idresto);
+
+	    statement.executeUpdate(); // Usa executeUpdate para UPDATE
+
+	    System.out.println("Mesa " + nroMesa + " marcada como libre.");
+	}
+	
+
+	public void eliminarMesa(int nroMesa, int idresto) throws SQLException {
+		
+		cn.conexion();
+		
+		
+		 try {
+		        cn.conexion();
+
+		        // Comprobar si la mesa está libre
+		        String sqlControl = "SELECT * FROM mesa WHERE ESTADO = 'LIBRE' AND NUMMESA = ? AND IDRESTAURANT = ?";
+		        PreparedStatement statementControl = cn.conexion().prepareStatement(sqlControl);
+		        statementControl.setInt(1, nroMesa);
+		        statementControl.setInt(2, idresto);
+		        ResultSet rsControl = statementControl.executeQuery();
+
+		        if (!rsControl.next()) {
+		            System.out.println("ERROR, MESA NO DISPONIBLE");
+		            return;
+		        }
+
+		        // Eliminar la mesa
+		        String sqlEliminar = "DELETE FROM mesa WHERE nummesa = ? AND IDRESTAURANT = ?";
+		        PreparedStatement statement = cn.conexion().prepareStatement(sqlEliminar);
+		        statement.setInt(1, nroMesa);
+		        statement.setInt(2, idresto);
+
+		        int filasAfectadas = statement.executeUpdate();
+
+		        if (filasAfectadas == 0) {
+		            System.out.println("Error: La mesa no se pudo eliminar. La mesa puede estar ocupada o reservada.");
+		        } else {
+		            System.out.println("Mesa " + nroMesa + " eliminada con éxito.");
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("Error al eliminar la mesa: " + e.getMessage());
+		    } finally {
+		        cn.cerrar();
+		    }
+	}
+
+	public void cargarConsumo(int nroMesa, int idresto, double consumo) throws SQLException {
+	    try {
+	        cn.conexion();
+
+	        // Verifica que la mesa esté ocupada
+	        String sqlVerificaOcupacion = "SELECT consumo FROM mesa WHERE nummesa = ? AND idrestaurante = ?";
+	        PreparedStatement statementVerificaOcupacion = cn.conexion().prepareStatement(sqlVerificaOcupacion);
+	        statementVerificaOcupacion.setInt(1, nroMesa);
+	        statementVerificaOcupacion.setInt(2, idresto);
+
+	        ResultSet rs = statementVerificaOcupacion.executeQuery();
+
+	        if (!rs.next()) {
+	            System.out.println("La mesa no existe o está libre.");
+	            return;
+	        }
+
+	        // Obtiene el consumo actual de la mesa
+	        double consumoActual = rs.getDouble("consumo");
+
+	        // Suma el consumo nuevo al consumo actual
+	        consumoActual += consumo;
+
+	        // Actualiza el consumo de la mesa
+	        String sqlActualizar = "UPDATE mesa SET consumo = ? WHERE nummesa = ? AND idrestaurante = ?";
+	        PreparedStatement statementActualizar = cn.conexion().prepareStatement(sqlActualizar);
+	        statementActualizar.setDouble(1, consumoActual);
+	        statementActualizar.setInt(2, nroMesa);
+	        statementActualizar.setInt(3, idresto);
+	        statementActualizar.executeUpdate();
+
+	        System.out.println("Consumo cargado con éxito.");
+	    } catch (SQLException e) {
+	        System.out.println("Error al cargar el consumo: " + e.getMessage());
+	    } finally {
+	        cn.cerrar();
+	    }
 	}
 
 }
+
+

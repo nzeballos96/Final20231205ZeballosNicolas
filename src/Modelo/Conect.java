@@ -2,10 +2,10 @@ package Modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
 import javax.swing.JOptionPane;
 
 public class Conect {
-
 
     String base = "BaseFinal20231205ZeballosNicolas";
     String url = "jdbc:mysql://localhost:3306/";
@@ -39,7 +39,7 @@ public class Conect {
             conect.close();
          //   System.out.println("CONEXI�N CERRADA");
         } catch (Exception e) {
-            System.out.println("ERROR AL CERRAR LA CONEXI�N");
+            System.out.println("ERROR AL CERRAR LA CONEXION");
         }
     }
 	

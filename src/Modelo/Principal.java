@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Controlador.CMesa;
@@ -23,17 +24,27 @@ public class Principal {
 		switch (opcion) {
 			case 1:
 
-				System.out.println("BIENVENIDO AL SISTEMA, SELECCIONE UN RESTO AL CUAL INGRESAR");
+				System.out.println("<=========================================>");
+				ArrayList<Restaurant> restos = resto.getRestaurants();
+				System.out.println("RESERVAS POR FECHA");
+				resto.imprimir(restos);
+				System.out.println("<=========================================>");
+				
+				
+				System.out.println("BIENVENIDO AL SISTEMA, SELECCIONE UN ID DEL RESTO AL CUAL INGRESAR");
+				
+				
 				final int idresto = new Scanner(System.in).nextInt();
 				Restaurant restaurante = resto.buscarResto(idresto);
 				if (restaurante != null) {
-					Instancias in = new Instancias();
+					Instancia in = new Instancia();
 					in.Menu(idresto);
 
 				} else {
 					System.out.println("RESTAURANT INEXISTENTE, CARGUE UNO");
 					main(args);
 				}
+				break;
 
 			case 2:
 
@@ -45,6 +56,7 @@ public class Principal {
 				resto.cargarresto(nombre, domicilio);
 				main(args);
 
+				break;
 			case 0:
 				System.out.println("Gracias por usar el menu");
 				System.exit(0);
